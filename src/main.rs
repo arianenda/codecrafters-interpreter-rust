@@ -27,8 +27,8 @@ fn main() {
                 let file_contents_chars = file_contents.chars();
                 for content in file_contents_chars {
                     match content {
-                        '(' => println!("LEFT PARENT ( null"),
-                        ')' => println!("RIGHT PARENT ) null"),
+                        '(' => println!("LEFT_PAREN ( null"),
+                        ')' => println!("RIGHT_PAREN ) null"),
                         _ => {}
                     }
                 println!("EOF null");
