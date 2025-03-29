@@ -29,7 +29,7 @@ fn main() {
                     match content {
                         '(' => println!("LEFT PARENT ( null"),
                         ')' => println!("RIGHT PARENT ) null"),
-                        '_' => "{}",
+                        '_' => {},
                     }
                 println!("EOF null");
                 }
