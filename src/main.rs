@@ -24,7 +24,15 @@ fn main() {
 
             // Uncomment this block to pass the first stage
             if !file_contents.is_empty() {
-                panic!("Scanner not implemented");
+                let file_contents_chars = file_contents.chars();
+                for content in file_contents_chars {
+                    match content {
+                        "(" => "LEFT PARENT ( null",
+                        ")" => "RIGHT PARENT ) null",
+                        "_" => "{}",
+                    }
+                println!("EOF null");
+                }
              } else {
                 println!("EOF  null"); // Placeholder, remove this line when implementing the scanner
              }
