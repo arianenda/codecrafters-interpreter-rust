@@ -1,6 +1,7 @@
 use std::env;
 use std::fs;
 use std::io::{self, Write};
+use std::process;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -22,6 +23,8 @@ fn main() {
                 String::new()
             });
 
+            let mut unexpected_char_err = false;
+
             // Uncomment this block to pass the first stage
             if !file_contents.is_empty() {
                 let file_contents_chars = file_contents.chars();
@@ -37,14 +40,20 @@ fn main() {
                         '-' => println!("MINUS - null"),
                         ';' => println!("SEMICOLON ; null"),
                         '*' => println!("STAR * null"),
-                        _ => {}
+                        _ => {
+                            writeln!(io::stderr(), "[line 1] Error: Unexpected character: {}", content).unwrap();
+                            unexpected_char_err = true;
+                        }
                     }
                 }
                 println!("EOF  null");
              } else {
                 println!("EOF  null"); // Placeholder, remove this line when implementing the scanner
              }
-        }
+                if unexpected_char_err == true {
+                    process::exit(65);
+                }
+        },
         _ => {
             writeln!(io::stderr(), "Unknown command: {}", command).unwrap();
             return;
