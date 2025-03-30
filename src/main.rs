@@ -49,6 +49,15 @@ fn main() {
                                 println!("EQUAL = null");
                             }
                         },
+                        '!' => {
+                            let mut peekable = file_contents_chars.clone().peekable();
+                            if peekable.next() == Some('=') {
+                                file_contents_chars.next();
+                                println!("BANG_EQUAL != null");
+                            } else {
+                                println!("BANG ! null");
+                            }
+                        },
                         _ => {
                             writeln!(io::stderr(), "[line 1] Error: Unexpected character: {}", c).unwrap();
                             unexpected_char_err = true;
