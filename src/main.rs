@@ -27,9 +27,9 @@ fn main() {
 
             // Uncomment this block to pass the first stage
             if !file_contents.is_empty() {
-                let file_contents_chars = file_contents.chars();
-                for content in file_contents_chars {
-                    match content {
+                let mut file_contents_chars = file_contents.chars();
+                while let Some(c) = file_contents_chars.next() {
+                    match c {
                         '(' => println!("LEFT_PAREN ( null"),
                         ')' => println!("RIGHT_PAREN ) null"),
                         '{' => println!("LEFT_BRACE {{ null"),
@@ -40,8 +40,17 @@ fn main() {
                         '-' => println!("MINUS - null"),
                         ';' => println!("SEMICOLON ; null"),
                         '*' => println!("STAR * null"),
+                        '=' => {
+                            let mut peekable = file_contents_chars.clone().peekable();
+                            if peekable.next() == Some('=') {
+                                file_contents_chars.next();
+                                println!("EQUAL_EQUAL == null");
+                            } else {
+                                println!("EQUAL = null");
+                            }
+                        },
                         _ => {
-                            writeln!(io::stderr(), "[line 1] Error: Unexpected character: {}", content).unwrap();
+                            writeln!(io::stderr(), "[line 1] Error: Unexpected character: {}", c).unwrap();
                             unexpected_char_err = true;
                         }
                     }
