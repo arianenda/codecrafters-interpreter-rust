@@ -11,7 +11,7 @@ pub fn tokenize(filename: &String) -> anyhow::Result<()> {
     };
 
     let mut unexpected_char_err = false;
-    let line = 1usize;
+    let mut line = 1usize;
     let mut chars = file_contents.chars();
     let mut tokens = vec![];
 
@@ -68,6 +68,7 @@ pub fn tokenize(filename: &String) -> anyhow::Result<()> {
                 if peekable.next() == Some('/') {
                     while let Some(c) = chars.next() {
                         if c == '\n' {
+                            line += 1;
                             break;
                         }
                     }
@@ -75,7 +76,11 @@ pub fn tokenize(filename: &String) -> anyhow::Result<()> {
                     tokens.push(Token::new(TokenType::SLASH, c.to_string()));
                 }
             }
-            '\n' | '\t' | ' ' => {
+            ' ' | '\t' => {
+                continue;
+            }
+            '\n' => {
+                line += 1;
                 continue;
             }
             _ => {
