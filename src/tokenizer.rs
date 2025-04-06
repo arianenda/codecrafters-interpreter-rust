@@ -75,6 +75,9 @@ pub fn tokenize(filename: &String) -> anyhow::Result<()> {
                     tokens.push(Token::new(TokenType::SLASH, c.to_string()));
                 }
             }
+            '\n' | '\t' | ' ' => {
+                continue;
+            }
             _ => {
                 eprintln!("[line {}] Error: Unexpected character: {}", line, c);
                 unexpected_char_err = true;
