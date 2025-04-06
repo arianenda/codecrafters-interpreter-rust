@@ -11,6 +11,7 @@ pub fn tokenize(filename: &String) -> anyhow::Result<()> {
     };
 
     let mut unexpected_char_err = false;
+    let mut string_literals_error = false;
     let mut line = 1usize;
     let mut chars = file_contents.chars();
     let mut tokens = vec![];
@@ -83,6 +84,33 @@ pub fn tokenize(filename: &String) -> anyhow::Result<()> {
                 line += 1;
                 continue;
             }
+            '"' => {
+                // let mut peekable = chars.clone().peekable();
+                let mut strings = String::new();
+                let mut strings_closed = false;
+                while let Some(c) = chars.next() {
+                    match c {
+                        '"' => {
+                            let str_contents = strings.clone();
+                            let format_str = format!("\"{}\"", str_contents);
+                            tokens.push(Token::new_with_value(
+                                TokenType::STRING,
+                                format_str,
+                                Some(str_contents),
+                            ));
+                            strings_closed = true;
+                            break;
+                        }
+                        _ => {
+                            strings.push(c);
+                        }
+                    }
+                }
+                if !strings_closed {
+                    eprintln!("[line {}] Error: Unterminated string.", line);
+                    string_literals_error = true;
+                }
+            }
             _ => {
                 eprintln!("[line {}] Error: Unexpected character: {}", line, c);
                 unexpected_char_err = true;
@@ -95,7 +123,7 @@ pub fn tokenize(filename: &String) -> anyhow::Result<()> {
     for token in tokens {
         println!("{}", token);
     }
-    return if unexpected_char_err {
+    return if unexpected_char_err | string_literals_error {
         bail!(Error::new(65))
     } else {
         Ok(())

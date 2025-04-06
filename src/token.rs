@@ -18,6 +18,7 @@ pub enum TokenType {
     LESS,
     GREATER,
     SLASH,
+    STRING,
 
     EQUAL_EQUAL,
     BANG_EQUAL,
@@ -39,6 +40,14 @@ impl Token {
             _type,
             _string,
             _value: None,
+        }
+    }
+
+    pub fn new_with_value(_type: TokenType, _string: String, _value: Option<String>) -> Self {
+        Token {
+            _type,
+            _string,
+            _value: _value,
         }
     }
 }
