@@ -2,6 +2,7 @@ use anyhow::bail;
 use std::fs;
 
 use crate::error::Error;
+use crate::number::{format_decimal, is_digit};
 use crate::token::{Token, TokenType};
 
 pub fn tokenize(filename: &String) -> anyhow::Result<()> {
@@ -85,7 +86,6 @@ pub fn tokenize(filename: &String) -> anyhow::Result<()> {
                 continue;
             }
             '"' => {
-                // let mut peekable = chars.clone().peekable();
                 let mut strings = String::new();
                 let mut strings_closed = false;
                 while let Some(c) = chars.next() {
@@ -110,6 +110,24 @@ pub fn tokenize(filename: &String) -> anyhow::Result<()> {
                     eprintln!("[line {}] Error: Unterminated string.", line);
                     string_literals_error = true;
                 }
+            }
+            '0'..='9' => {
+                let mut numbers = String::new();
+                let mut peekable = chars.clone().peekable();
+                numbers.push(c);
+                while let Some(c) = peekable.next() {
+                    if is_digit(c) {
+                        numbers.push(c);
+                        chars.next();
+                    } else {
+                        break;
+                    }
+                }
+                tokens.push(Token::new_with_value(
+                    TokenType::NUMBER,
+                    numbers.to_string(),
+                    Some(format_decimal(&numbers)),
+                ));
             }
             _ => {
                 eprintln!("[line {}] Error: Unexpected character: {}", line, c);

@@ -19,6 +19,7 @@ pub enum TokenType {
     GREATER,
     SLASH,
     STRING,
+    NUMBER,
 
     EQUAL_EQUAL,
     BANG_EQUAL,
