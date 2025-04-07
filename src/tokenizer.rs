@@ -2,6 +2,7 @@ use anyhow::bail;
 use std::fs;
 
 use crate::error::Error;
+use crate::identifier::is_alpha_numeric;
 use crate::number::{format_decimal, is_digit};
 use crate::token::{Token, TokenType};
 
@@ -128,6 +129,22 @@ pub fn tokenize(filename: &String) -> anyhow::Result<()> {
                     numbers.to_string(),
                     Some(format_decimal(&numbers)),
                 ));
+            }
+            'a'..='z' | 'A'..='Z' | '_' => {
+                let mut identifiers = String::new();
+                let mut peekable = chars.clone().peekable();
+                identifiers.push(c);
+
+                while let Some(c) = peekable.next() {
+                    if is_alpha_numeric(c) {
+                        identifiers.push(c);
+                        chars.next();
+                    } else {
+                        break;
+                    }
+                }
+
+                tokens.push(Token::new(TokenType::IDENTIFIER, identifiers.to_string()))
             }
             _ => {
                 eprintln!("[line {}] Error: Unexpected character: {}", line, c);

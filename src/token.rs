@@ -20,6 +20,7 @@ pub enum TokenType {
     SLASH,
     STRING,
     NUMBER,
+    IDENTIFIER,
 
     EQUAL_EQUAL,
     BANG_EQUAL,

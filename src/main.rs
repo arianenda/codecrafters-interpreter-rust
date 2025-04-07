@@ -3,6 +3,7 @@ use std::io::{self, Write};
 use std::process::exit;
 
 mod error;
+mod identifier;
 mod number;
 mod token;
 mod tokenizer;
