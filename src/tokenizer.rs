@@ -3,6 +3,7 @@ use std::fs;
 
 use crate::error::Error;
 use crate::identifier::is_alpha_numeric;
+use crate::keyword::init_keywords_map;
 use crate::number::{format_decimal, is_digit};
 use crate::token::{Token, TokenType};
 
@@ -143,8 +144,11 @@ pub fn tokenize(filename: &String) -> anyhow::Result<()> {
                         break;
                     }
                 }
-
-                tokens.push(Token::new(TokenType::IDENTIFIER, identifiers.to_string()))
+                let keywords_hashmap = init_keywords_map();
+                let token_type = keywords_hashmap
+                    .get(identifiers.as_str())
+                    .unwrap_or(&TokenType::IDENTIFIER);
+                tokens.push(Token::new(token_type.clone(), identifiers.to_string()))
             }
             _ => {
                 eprintln!("[line {}] Error: Unexpected character: {}", line, c);

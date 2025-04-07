@@ -4,6 +4,7 @@ use std::process::exit;
 
 mod error;
 mod identifier;
+mod keyword;
 mod number;
 mod token;
 mod tokenizer;

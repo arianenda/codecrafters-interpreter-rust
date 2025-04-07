@@ -1,6 +1,6 @@
 use ::std::fmt::Display;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 #[allow(non_camel_case_types)]
 pub enum TokenType {
     LEFT_PAREN,
@@ -21,6 +21,24 @@ pub enum TokenType {
     STRING,
     NUMBER,
     IDENTIFIER,
+
+    //keywords
+    AND,
+    CLASS,
+    ELSE,
+    FALSE,
+    FOR,
+    FUN,
+    IF,
+    NIL,
+    OR,
+    PRINT,
+    RETURN,
+    SUPER,
+    THIS,
+    TRUE,
+    VAR,
+    WHILE,
 
     EQUAL_EQUAL,
     BANG_EQUAL,
