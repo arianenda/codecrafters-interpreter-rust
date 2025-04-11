@@ -39,6 +39,11 @@ impl Parser {
                 self.advance();
                 Some(Expr::Boolean(value))
             }
+            TokenType::NUMBER => {
+                let value = curr_token._value.clone()?;
+                self.advance();
+                Some(Expr::Number(value))
+            }
             TokenType::NIL => {
                 self.advance();
                 Some(Expr::Nil)
