@@ -7,7 +7,7 @@ use crate::keyword::init_keywords_map;
 use crate::number::{format_decimal, is_digit};
 use crate::token::{Token, TokenType};
 
-pub fn tokenize(filename: &String) -> anyhow::Result<()> {
+pub fn tokenize(filename: &String) -> anyhow::Result<Vec<Token>, anyhow::Error> {
     let file_contents = match fs::read_to_string(filename) {
         Ok(contents) => contents,
         Err(_) => bail!(Error::new(u8::MAX)),
@@ -159,12 +159,13 @@ pub fn tokenize(filename: &String) -> anyhow::Result<()> {
 
     tokens.push(Token::new(TokenType::EOF, "".to_string()));
 
-    for token in tokens {
-        println!("{}", token);
-    }
     return if unexpected_char_err | string_literals_error {
+        // print token in tokens before error for now..
+        for token in &tokens {
+            println!("{}", token);
+        }
         bail!(Error::new(65))
     } else {
-        Ok(())
+        Ok(tokens)
     };
 }
