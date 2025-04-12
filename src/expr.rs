@@ -4,6 +4,7 @@ use std::fmt;
 pub enum Expr {
     Boolean(String),
     Number(String),
+    String(String),
     Nil,
 }
 
@@ -12,6 +13,7 @@ impl Expr {
         match self {
             Expr::Boolean(bool) => bool.to_string(),
             Expr::Number(num) => num.to_string(),
+            Expr::String(str) => str.to_string(),
             Expr::Nil => "nil".to_string(),
         }
     }
@@ -22,6 +24,7 @@ impl fmt::Display for Expr {
         match self {
             Expr::Boolean(bool) => write!(f, "{}", bool),
             Expr::Number(num) => write!(f, "{}", num),
+            Expr::String(str) => write!(f, "{}", str),
             Expr::Nil => write!(f, ""),
         }
     }
